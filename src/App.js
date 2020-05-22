@@ -1,25 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import NavbarPage from "./components/Nav/NavBar";
+import Landing from "./components/Landing/Landing";
+import CardBox from "./components/Cards/CardBox";
+import CovidApi from "./components/AxiosInstance/CovidApi";
+import Footer from "./components/Footer/Footer";
 
 function App() {
+  const [getSummary, setSummary] = useState([]);
+  useEffect(() => {
+    const fetchSummary = async () => {
+      const res = await CovidApi().get("/summary");
+      setSummary(res.data);
+    };
+    fetchSummary();
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavbarPage />
+      <Landing />
+      <CardBox getSummary={getSummary} />
+      <Footer />
+    </>
   );
 }
 
